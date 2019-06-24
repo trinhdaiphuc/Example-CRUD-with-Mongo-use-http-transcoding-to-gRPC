@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -401,70 +402,70 @@ func (m *DeleteEntityRes) GetSuccess() bool {
 	return false
 }
 
-type ListEntityReq struct {
+type ListEntitiesReq struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListEntityReq) Reset()         { *m = ListEntityReq{} }
-func (m *ListEntityReq) String() string { return proto.CompactTextString(m) }
-func (*ListEntityReq) ProtoMessage()    {}
-func (*ListEntityReq) Descriptor() ([]byte, []int) {
+func (m *ListEntitiesReq) Reset()         { *m = ListEntitiesReq{} }
+func (m *ListEntitiesReq) String() string { return proto.CompactTextString(m) }
+func (*ListEntitiesReq) ProtoMessage()    {}
+func (*ListEntitiesReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b38ccb06a827056, []int{9}
 }
 
-func (m *ListEntityReq) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListEntityReq.Unmarshal(m, b)
+func (m *ListEntitiesReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListEntitiesReq.Unmarshal(m, b)
 }
-func (m *ListEntityReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListEntityReq.Marshal(b, m, deterministic)
+func (m *ListEntitiesReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListEntitiesReq.Marshal(b, m, deterministic)
 }
-func (m *ListEntityReq) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListEntityReq.Merge(m, src)
+func (m *ListEntitiesReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListEntitiesReq.Merge(m, src)
 }
-func (m *ListEntityReq) XXX_Size() int {
-	return xxx_messageInfo_ListEntityReq.Size(m)
+func (m *ListEntitiesReq) XXX_Size() int {
+	return xxx_messageInfo_ListEntitiesReq.Size(m)
 }
-func (m *ListEntityReq) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListEntityReq.DiscardUnknown(m)
+func (m *ListEntitiesReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListEntitiesReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListEntityReq proto.InternalMessageInfo
+var xxx_messageInfo_ListEntitiesReq proto.InternalMessageInfo
 
-type ListEntityRes struct {
+type ListEntitiesRes struct {
 	Entity               *Entity  `protobuf:"bytes,1,opt,name=entity,proto3" json:"entity,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListEntityRes) Reset()         { *m = ListEntityRes{} }
-func (m *ListEntityRes) String() string { return proto.CompactTextString(m) }
-func (*ListEntityRes) ProtoMessage()    {}
-func (*ListEntityRes) Descriptor() ([]byte, []int) {
+func (m *ListEntitiesRes) Reset()         { *m = ListEntitiesRes{} }
+func (m *ListEntitiesRes) String() string { return proto.CompactTextString(m) }
+func (*ListEntitiesRes) ProtoMessage()    {}
+func (*ListEntitiesRes) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b38ccb06a827056, []int{10}
 }
 
-func (m *ListEntityRes) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListEntityRes.Unmarshal(m, b)
+func (m *ListEntitiesRes) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListEntitiesRes.Unmarshal(m, b)
 }
-func (m *ListEntityRes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListEntityRes.Marshal(b, m, deterministic)
+func (m *ListEntitiesRes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListEntitiesRes.Marshal(b, m, deterministic)
 }
-func (m *ListEntityRes) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListEntityRes.Merge(m, src)
+func (m *ListEntitiesRes) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListEntitiesRes.Merge(m, src)
 }
-func (m *ListEntityRes) XXX_Size() int {
-	return xxx_messageInfo_ListEntityRes.Size(m)
+func (m *ListEntitiesRes) XXX_Size() int {
+	return xxx_messageInfo_ListEntitiesRes.Size(m)
 }
-func (m *ListEntityRes) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListEntityRes.DiscardUnknown(m)
+func (m *ListEntitiesRes) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListEntitiesRes.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListEntityRes proto.InternalMessageInfo
+var xxx_messageInfo_ListEntitiesRes proto.InternalMessageInfo
 
-func (m *ListEntityRes) GetEntity() *Entity {
+func (m *ListEntitiesRes) GetEntity() *Entity {
 	if m != nil {
 		return m.Entity
 	}
@@ -481,34 +482,39 @@ func init() {
 	proto.RegisterType((*ReadEntityRes)(nil), "entity.ReadEntityRes")
 	proto.RegisterType((*DeleteEntityReq)(nil), "entity.DeleteEntityReq")
 	proto.RegisterType((*DeleteEntityRes)(nil), "entity.DeleteEntityRes")
-	proto.RegisterType((*ListEntityReq)(nil), "entity.ListEntityReq")
-	proto.RegisterType((*ListEntityRes)(nil), "entity.ListEntityRes")
+	proto.RegisterType((*ListEntitiesReq)(nil), "entity.ListEntitiesReq")
+	proto.RegisterType((*ListEntitiesRes)(nil), "entity.ListEntitiesRes")
 }
 
 func init() { proto.RegisterFile("entity/entity.proto", fileDescriptor_9b38ccb06a827056) }
 
 var fileDescriptor_9b38ccb06a827056 = []byte{
-	// 319 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0xc1, 0x4e, 0x83, 0x40,
-	0x10, 0x0d, 0xb4, 0x41, 0x9d, 0x4a, 0x31, 0x63, 0x8c, 0x84, 0x8b, 0x95, 0x83, 0x31, 0x31, 0xa9,
-	0xa6, 0x1e, 0x8c, 0xc6, 0x83, 0x89, 0x7a, 0xf3, 0x84, 0xf1, 0x2e, 0xc2, 0x1c, 0x36, 0xa9, 0x80,
-	0xec, 0xd6, 0xc4, 0xaf, 0xf4, 0x97, 0x0c, 0x0b, 0xb8, 0xcb, 0x5a, 0x12, 0xec, 0x89, 0xdd, 0x37,
-	0x33, 0xef, 0x0d, 0xef, 0x01, 0xec, 0x53, 0x26, 0x98, 0xf8, 0x3a, 0xaf, 0x1f, 0xf3, 0xa2, 0xcc,
-	0x45, 0x8e, 0x4e, 0x7d, 0x0b, 0x5f, 0xc1, 0x79, 0x94, 0x27, 0x9c, 0x82, 0xcd, 0x52, 0xdf, 0x9a,
-	0x59, 0xa7, 0x3b, 0x91, 0xcd, 0x52, 0x44, 0x18, 0x67, 0xf1, 0x3b, 0xf9, 0xb6, 0x44, 0xe4, 0x19,
-	0x67, 0x30, 0x49, 0x89, 0x27, 0x25, 0x2b, 0x04, 0xcb, 0x33, 0x7f, 0x24, 0x4b, 0x3a, 0x84, 0x7b,
-	0x30, 0x5a, 0x95, 0x4b, 0x7f, 0x2c, 0x2b, 0xd5, 0x31, 0xbc, 0x06, 0xef, 0xbe, 0xa4, 0x58, 0x50,
-	0xad, 0x13, 0xd1, 0x07, 0x9e, 0x40, 0x23, 0x2f, 0xe5, 0x26, 0x8b, 0xe9, 0xbc, 0xd9, 0xad, 0x69,
-	0x69, 0x97, 0xfb, 0x33, 0xca, 0xff, 0x33, 0xfa, 0x52, 0xa4, 0x9b, 0xaa, 0x76, 0x47, 0x87, 0xab,
-	0x1e, 0x81, 0x1b, 0x51, 0x9c, 0x2a, 0x4d, 0xc3, 0xd4, 0xf0, 0xaa, 0xdb, 0x30, 0x9c, 0xf9, 0x18,
-	0xbc, 0x07, 0x5a, 0x92, 0xfe, 0x3e, 0x26, 0xf7, 0x99, 0xd9, 0xc2, 0xd1, 0x87, 0x2d, 0xbe, 0x4a,
-	0x12, 0xe2, 0x5c, 0xf6, 0x6d, 0x47, 0xed, 0x35, 0xf4, 0xc0, 0x7d, 0x62, 0x5c, 0xfc, 0xb2, 0x55,
-	0x9b, 0xe9, 0xc0, 0xe0, 0xcd, 0x16, 0xdf, 0x36, 0xb8, 0x35, 0xf4, 0x4c, 0xe5, 0x27, 0x4b, 0x08,
-	0xef, 0x60, 0x57, 0x8f, 0x0d, 0x0f, 0xdb, 0x49, 0xe3, 0x3b, 0x08, 0x7a, 0x0a, 0xbc, 0x62, 0xd0,
-	0x23, 0x50, 0x0c, 0x46, 0xa6, 0x41, 0x4f, 0x81, 0xe3, 0x0d, 0x80, 0x32, 0x1a, 0x0f, 0xda, 0xb6,
-	0x4e, 0x3a, 0xc1, 0x5a, 0x58, 0xaa, 0xeb, 0x46, 0x2a, 0x75, 0x23, 0x81, 0xa0, 0xa7, 0xc0, 0xf1,
-	0x16, 0x40, 0x99, 0xa9, 0xd4, 0x3b, 0x8e, 0x07, 0x6b, 0x61, 0x7e, 0x61, 0xbd, 0x39, 0xf2, 0x17,
-	0xbd, 0xfc, 0x09, 0x00, 0x00, 0xff, 0xff, 0x51, 0x4c, 0x84, 0xa3, 0xb9, 0x03, 0x00, 0x00,
+	// 400 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x4d, 0x4b, 0xeb, 0x40,
+	0x14, 0xa5, 0x69, 0xe9, 0x7b, 0xbd, 0xfd, 0xbe, 0xe5, 0xbd, 0x97, 0x17, 0x04, 0xeb, 0x2c, 0x44,
+	0x14, 0x1a, 0xa9, 0x0b, 0xd1, 0xad, 0xba, 0x73, 0x15, 0x29, 0x08, 0x6e, 0x8c, 0xc9, 0xa5, 0x0c,
+	0xd4, 0x24, 0xcd, 0xa4, 0x82, 0x88, 0x1b, 0xff, 0x82, 0xff, 0xcb, 0x8d, 0x7f, 0xc1, 0x1f, 0x22,
+	0x99, 0xa4, 0x4d, 0x32, 0x36, 0x50, 0x5d, 0x65, 0xe6, 0x9e, 0x73, 0xcf, 0x3d, 0x33, 0x67, 0x08,
+	0x0c, 0xc8, 0x8b, 0x78, 0xf4, 0x68, 0x26, 0x9f, 0x51, 0x10, 0xfa, 0x91, 0x8f, 0xf5, 0x64, 0x67,
+	0x6c, 0x4d, 0x7d, 0x7f, 0x3a, 0x23, 0xd3, 0x0e, 0xb8, 0x69, 0x7b, 0x9e, 0x1f, 0xd9, 0x11, 0xf7,
+	0x3d, 0x91, 0xb0, 0xd8, 0x2d, 0xd4, 0x2f, 0x24, 0x0f, 0x3b, 0xa0, 0x71, 0x57, 0xaf, 0x0c, 0x2b,
+	0x7b, 0x0d, 0x4b, 0xe3, 0x2e, 0x22, 0xd4, 0x3c, 0xfb, 0x9e, 0x74, 0x4d, 0x56, 0xe4, 0x1a, 0x87,
+	0xd0, 0x74, 0x49, 0x38, 0x21, 0x0f, 0x62, 0x0d, 0xbd, 0x2a, 0xa1, 0x7c, 0x09, 0x7b, 0x50, 0x5d,
+	0x84, 0x33, 0xbd, 0x26, 0x91, 0x78, 0xc9, 0x4e, 0xa0, 0x7b, 0x16, 0x92, 0x1d, 0x51, 0x32, 0xc7,
+	0xa2, 0x39, 0xee, 0x42, 0x6a, 0x4e, 0x8e, 0x6b, 0x8e, 0x3b, 0xa3, 0xd4, 0x79, 0x4a, 0x49, 0xd1,
+	0xaf, 0xad, 0xe2, 0x3b, 0xad, 0x93, 0xc0, 0xfd, 0xe9, 0xd4, 0x62, 0xeb, 0xe6, 0x53, 0xb7, 0xa1,
+	0x6d, 0x91, 0xed, 0x66, 0x33, 0x95, 0x4b, 0x65, 0xc7, 0x45, 0xc2, 0xe6, 0xca, 0x3b, 0xd0, 0x3d,
+	0xa7, 0x19, 0xe5, 0xcf, 0xa3, 0x6a, 0x1f, 0xa8, 0x14, 0x81, 0x3a, 0xfc, 0x12, 0x0b, 0xc7, 0x21,
+	0x21, 0x24, 0xef, 0xb7, 0xb5, 0xdc, 0xb2, 0x3e, 0x74, 0x2f, 0xb9, 0x88, 0x24, 0x95, 0x93, 0xb0,
+	0x68, 0x1e, 0x9f, 0xbb, 0x58, 0xda, 0xd8, 0xdd, 0xf8, 0xad, 0x0a, 0xed, 0xa4, 0x74, 0x45, 0xe1,
+	0x03, 0x77, 0x08, 0x6f, 0xa0, 0x95, 0x8f, 0x0e, 0xff, 0x2d, 0x3b, 0x95, 0xb7, 0x60, 0x94, 0x00,
+	0x82, 0xfd, 0x7f, 0x79, 0xff, 0x78, 0xd5, 0x06, 0xac, 0x91, 0x3c, 0x6b, 0x4e, 0xe2, 0x34, 0x1d,
+	0x87, 0x16, 0x40, 0x76, 0x8b, 0xf8, 0x67, 0xa9, 0x50, 0xb8, 0x7a, 0x63, 0x6d, 0x59, 0xb0, 0xbf,
+	0x52, 0xb6, 0x87, 0x9d, 0x95, 0xac, 0xf9, 0xc4, 0xdd, 0xe7, 0xd8, 0x70, 0x3e, 0xf5, 0xcc, 0xb0,
+	0xf2, 0x8c, 0x8c, 0x12, 0x60, 0x65, 0xd8, 0x58, 0x63, 0xf8, 0x1a, 0x5a, 0xf9, 0x68, 0x32, 0x71,
+	0x25, 0x53, 0xa3, 0x04, 0x58, 0xd9, 0xde, 0x57, 0x6d, 0x4f, 0xa0, 0x95, 0x0f, 0x2d, 0x53, 0x56,
+	0xd2, 0x35, 0x4a, 0x00, 0xc1, 0xfa, 0x52, 0xb9, 0x89, 0x99, 0xed, 0xc3, 0xca, 0x5d, 0x5d, 0xfe,
+	0x1d, 0x8e, 0x3e, 0x03, 0x00, 0x00, 0xff, 0xff, 0xd6, 0x5d, 0xe2, 0xf3, 0x5a, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -524,10 +530,10 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EntityServiceClient interface {
 	CreateEntity(ctx context.Context, in *CreateEntityReq, opts ...grpc.CallOption) (*CreateEntityRes, error)
-	UpdateEntity(ctx context.Context, in *UpdateEntityReq, opts ...grpc.CallOption) (*UpdateEntityRes, error)
 	ReadEntity(ctx context.Context, in *ReadEntityReq, opts ...grpc.CallOption) (*ReadEntityRes, error)
+	UpdateEntity(ctx context.Context, in *UpdateEntityReq, opts ...grpc.CallOption) (*UpdateEntityRes, error)
 	DeleteEntity(ctx context.Context, in *DeleteEntityReq, opts ...grpc.CallOption) (*DeleteEntityRes, error)
-	ListEntity(ctx context.Context, in *ListEntityReq, opts ...grpc.CallOption) (EntityService_ListEntityClient, error)
+	ListEntities(ctx context.Context, in *ListEntitiesReq, opts ...grpc.CallOption) (EntityService_ListEntitiesClient, error)
 }
 
 type entityServiceClient struct {
@@ -547,18 +553,18 @@ func (c *entityServiceClient) CreateEntity(ctx context.Context, in *CreateEntity
 	return out, nil
 }
 
-func (c *entityServiceClient) UpdateEntity(ctx context.Context, in *UpdateEntityReq, opts ...grpc.CallOption) (*UpdateEntityRes, error) {
-	out := new(UpdateEntityRes)
-	err := c.cc.Invoke(ctx, "/entity.EntityService/UpdateEntity", in, out, opts...)
+func (c *entityServiceClient) ReadEntity(ctx context.Context, in *ReadEntityReq, opts ...grpc.CallOption) (*ReadEntityRes, error) {
+	out := new(ReadEntityRes)
+	err := c.cc.Invoke(ctx, "/entity.EntityService/ReadEntity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *entityServiceClient) ReadEntity(ctx context.Context, in *ReadEntityReq, opts ...grpc.CallOption) (*ReadEntityRes, error) {
-	out := new(ReadEntityRes)
-	err := c.cc.Invoke(ctx, "/entity.EntityService/ReadEntity", in, out, opts...)
+func (c *entityServiceClient) UpdateEntity(ctx context.Context, in *UpdateEntityReq, opts ...grpc.CallOption) (*UpdateEntityRes, error) {
+	out := new(UpdateEntityRes)
+	err := c.cc.Invoke(ctx, "/entity.EntityService/UpdateEntity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -574,12 +580,12 @@ func (c *entityServiceClient) DeleteEntity(ctx context.Context, in *DeleteEntity
 	return out, nil
 }
 
-func (c *entityServiceClient) ListEntity(ctx context.Context, in *ListEntityReq, opts ...grpc.CallOption) (EntityService_ListEntityClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_EntityService_serviceDesc.Streams[0], "/entity.EntityService/ListEntity", opts...)
+func (c *entityServiceClient) ListEntities(ctx context.Context, in *ListEntitiesReq, opts ...grpc.CallOption) (EntityService_ListEntitiesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_EntityService_serviceDesc.Streams[0], "/entity.EntityService/ListEntities", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &entityServiceListEntityClient{stream}
+	x := &entityServiceListEntitiesClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -589,17 +595,17 @@ func (c *entityServiceClient) ListEntity(ctx context.Context, in *ListEntityReq,
 	return x, nil
 }
 
-type EntityService_ListEntityClient interface {
-	Recv() (*ListEntityRes, error)
+type EntityService_ListEntitiesClient interface {
+	Recv() (*ListEntitiesRes, error)
 	grpc.ClientStream
 }
 
-type entityServiceListEntityClient struct {
+type entityServiceListEntitiesClient struct {
 	grpc.ClientStream
 }
 
-func (x *entityServiceListEntityClient) Recv() (*ListEntityRes, error) {
-	m := new(ListEntityRes)
+func (x *entityServiceListEntitiesClient) Recv() (*ListEntitiesRes, error) {
+	m := new(ListEntitiesRes)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -609,10 +615,10 @@ func (x *entityServiceListEntityClient) Recv() (*ListEntityRes, error) {
 // EntityServiceServer is the server API for EntityService service.
 type EntityServiceServer interface {
 	CreateEntity(context.Context, *CreateEntityReq) (*CreateEntityRes, error)
-	UpdateEntity(context.Context, *UpdateEntityReq) (*UpdateEntityRes, error)
 	ReadEntity(context.Context, *ReadEntityReq) (*ReadEntityRes, error)
+	UpdateEntity(context.Context, *UpdateEntityReq) (*UpdateEntityRes, error)
 	DeleteEntity(context.Context, *DeleteEntityReq) (*DeleteEntityRes, error)
-	ListEntity(*ListEntityReq, EntityService_ListEntityServer) error
+	ListEntities(*ListEntitiesReq, EntityService_ListEntitiesServer) error
 }
 
 // UnimplementedEntityServiceServer can be embedded to have forward compatible implementations.
@@ -622,17 +628,17 @@ type UnimplementedEntityServiceServer struct {
 func (*UnimplementedEntityServiceServer) CreateEntity(ctx context.Context, req *CreateEntityReq) (*CreateEntityRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEntity not implemented")
 }
-func (*UnimplementedEntityServiceServer) UpdateEntity(ctx context.Context, req *UpdateEntityReq) (*UpdateEntityRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateEntity not implemented")
-}
 func (*UnimplementedEntityServiceServer) ReadEntity(ctx context.Context, req *ReadEntityReq) (*ReadEntityRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadEntity not implemented")
+}
+func (*UnimplementedEntityServiceServer) UpdateEntity(ctx context.Context, req *UpdateEntityReq) (*UpdateEntityRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateEntity not implemented")
 }
 func (*UnimplementedEntityServiceServer) DeleteEntity(ctx context.Context, req *DeleteEntityReq) (*DeleteEntityRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEntity not implemented")
 }
-func (*UnimplementedEntityServiceServer) ListEntity(req *ListEntityReq, srv EntityService_ListEntityServer) error {
-	return status.Errorf(codes.Unimplemented, "method ListEntity not implemented")
+func (*UnimplementedEntityServiceServer) ListEntities(req *ListEntitiesReq, srv EntityService_ListEntitiesServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListEntities not implemented")
 }
 
 func RegisterEntityServiceServer(s *grpc.Server, srv EntityServiceServer) {
@@ -657,24 +663,6 @@ func _EntityService_CreateEntity_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EntityService_UpdateEntity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateEntityReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(EntityServiceServer).UpdateEntity(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/entity.EntityService/UpdateEntity",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EntityServiceServer).UpdateEntity(ctx, req.(*UpdateEntityReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _EntityService_ReadEntity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReadEntityReq)
 	if err := dec(in); err != nil {
@@ -689,6 +677,24 @@ func _EntityService_ReadEntity_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EntityServiceServer).ReadEntity(ctx, req.(*ReadEntityReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EntityService_UpdateEntity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateEntityReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EntityServiceServer).UpdateEntity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entity.EntityService/UpdateEntity",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EntityServiceServer).UpdateEntity(ctx, req.(*UpdateEntityReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -711,24 +717,24 @@ func _EntityService_DeleteEntity_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EntityService_ListEntity_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ListEntityReq)
+func _EntityService_ListEntities_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListEntitiesReq)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(EntityServiceServer).ListEntity(m, &entityServiceListEntityServer{stream})
+	return srv.(EntityServiceServer).ListEntities(m, &entityServiceListEntitiesServer{stream})
 }
 
-type EntityService_ListEntityServer interface {
-	Send(*ListEntityRes) error
+type EntityService_ListEntitiesServer interface {
+	Send(*ListEntitiesRes) error
 	grpc.ServerStream
 }
 
-type entityServiceListEntityServer struct {
+type entityServiceListEntitiesServer struct {
 	grpc.ServerStream
 }
 
-func (x *entityServiceListEntityServer) Send(m *ListEntityRes) error {
+func (x *entityServiceListEntitiesServer) Send(m *ListEntitiesRes) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -741,12 +747,12 @@ var _EntityService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _EntityService_CreateEntity_Handler,
 		},
 		{
-			MethodName: "UpdateEntity",
-			Handler:    _EntityService_UpdateEntity_Handler,
-		},
-		{
 			MethodName: "ReadEntity",
 			Handler:    _EntityService_ReadEntity_Handler,
+		},
+		{
+			MethodName: "UpdateEntity",
+			Handler:    _EntityService_UpdateEntity_Handler,
 		},
 		{
 			MethodName: "DeleteEntity",
@@ -755,8 +761,8 @@ var _EntityService_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "ListEntity",
-			Handler:       _EntityService_ListEntity_Handler,
+			StreamName:    "ListEntities",
+			Handler:       _EntityService_ListEntities_Handler,
 			ServerStreams: true,
 		},
 	},

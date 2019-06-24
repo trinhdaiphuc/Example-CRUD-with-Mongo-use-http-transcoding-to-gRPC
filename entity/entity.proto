@@ -1,13 +1,38 @@
 syntax = "proto3";
 package entity;
 
-// The entity service definition
+import "google/api/annotations.proto";
+
+// The entity service definition with http transcoding
 service EntityService {
-  rpc CreateEntity(CreateEntityReq) returns (CreateEntityRes);  //unary
-  rpc UpdateEntity(UpdateEntityReq) returns (UpdateEntityRes);  //unary
-  rpc ReadEntity(ReadEntityReq) returns (ReadEntityRes);        //unary
-  rpc DeleteEntity(DeleteEntityReq) returns (DeleteEntityRes);  //unary
-  rpc ListEntity(ListEntityReq) returns (stream ListEntityRes); //server streaming
+  rpc CreateEntity(CreateEntityReq) returns (CreateEntityRes) {
+    // Define HTTP mapping.
+    option (google.api.http) = {
+      post: "/entities"
+      body: "entity"
+    };
+  }
+  rpc ReadEntity(ReadEntityReq) returns (ReadEntityRes) {
+    option (google.api.http) = { 
+      get: "/entities/{id}" 
+    };
+  }
+  rpc UpdateEntity(UpdateEntityReq) returns (UpdateEntityRes) {
+    option (google.api.http) = {
+      put: "/entities"
+      body: "entity"
+    };
+  }
+  rpc DeleteEntity(DeleteEntityReq) returns (DeleteEntityRes) {
+    option (google.api.http) = { 
+      delete: "/entities/{id}" 
+    };
+  }
+  rpc ListEntities(ListEntitiesReq) returns (stream ListEntitiesRes) {
+    option (google.api.http) = {
+      get: "/entities"
+    };
+  }
 }
 
 // Entity message type for responding
@@ -51,9 +76,9 @@ message DeleteEntityRes {
   bool success = 1;
 }
 
-message ListEntityReq {}
+message ListEntitiesReq {}
 
-message ListEntityRes {
+message ListEntitiesRes {
   Entity entity = 1;
 }
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -9,6 +10,7 @@ import (
 	"os/signal"
 
 	pb "../entity"
+	"github.com/golang/glog"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -32,6 +34,8 @@ type EntityItem struct {
 func main() {
 	// Configure 'log' package to give file name and line number on eg. log.Fatal
 	// Pipe flags to one another (log.LstdFLags = log.Ldate | log.Ltime)
+	flag.Parse()
+	defer glog.Flush()
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	fmt.Println("Starting server on port :50051...")
 
@@ -61,6 +65,7 @@ func main() {
 	// Handle potential errors
 	if err != nil {
 		log.Fatal(err)
+		glog.Fatal(err)
 	}
 
 	// Check whether the connection was succesful by pinging the MongoDB server
@@ -77,6 +82,7 @@ func main() {
 	go func() {
 		if err := s.Serve(listener); err != nil {
 			log.Fatalf("Failed to serve: %v", err)
+			glog.Fatal(err)
 		}
 	}()
 	fmt.Println("Server succesfully started on port :50051")
