@@ -1,0 +1,59 @@
+syntax = "proto3";
+package entity;
+
+// The entity service definition
+service EntityService {
+  rpc CreateEntity(CreateEntityReq) returns (CreateEntityRes);  //unary
+  rpc UpdateEntity(UpdateEntityReq) returns (UpdateEntityRes);  //unary
+  rpc ReadEntity(ReadEntityReq) returns (ReadEntityRes);        //unary
+  rpc DeleteEntity(DeleteEntityReq) returns (DeleteEntityRes);  //unary
+  rpc ListEntity(ListEntityReq) returns (stream ListEntityRes); //server streaming
+}
+
+// Entity message type for responding
+message Entity {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string url = 4;
+}
+
+// Defintion of request and respone for each services
+message CreateEntityReq {
+  Entity entity = 1;
+}
+
+message CreateEntityRes {
+  Entity entity = 1;
+}
+
+message UpdateEntityReq {
+  Entity entity = 1;
+}
+
+message UpdateEntityRes {
+  Entity entity = 1;
+}
+
+message ReadEntityReq {
+  string id = 1;
+}
+
+message ReadEntityRes {
+  Entity entity = 1;
+}
+
+message DeleteEntityReq {
+  string id = 1;
+}
+
+message DeleteEntityRes {
+  bool success = 1;
+}
+
+message ListEntityReq {}
+
+message ListEntityRes {
+  Entity entity = 1;
+}
+
