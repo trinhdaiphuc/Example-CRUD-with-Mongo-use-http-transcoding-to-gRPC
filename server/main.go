@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"os/signal"
 
 	pb "../entity"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
@@ -18,6 +21,13 @@ var entitydb *mongo.Collection
 var mongoCtx context.Context
 
 type EntityServiceServer struct{}
+
+type EntityItem struct {
+	ID          primitive.ObjectID `bson:"id,omitempty"`
+	Name        string             `bson:"name"`
+	Description string             `bson:"description"`
+	URL         string             `bson:"url"`
+}
 
 func main() {
 	// Configure 'log' package to give file name and line number on eg. log.Fatal
@@ -35,7 +45,7 @@ func main() {
 	opts := []grpc.ServerOption{}
 	// Create new gRPC server with (blank) options
 	s := grpc.NewServer(opts...)
-	// Create BlogService type
+	// Create EntityService type
 	srv := &EntityServiceServer{}
 	// Register the service with the server
 	pb.RegisterEntityServiceServer(s, srv)
@@ -62,4 +72,32 @@ func main() {
 	}
 	// Bind our collection to our global variable for use in other methods
 	entitydb = db.Database("mydb").Collection("entity")
+
+	// Start the server in a child routine
+	go func() {
+		if err := s.Serve(listener); err != nil {
+			log.Fatalf("Failed to serve: %v", err)
+		}
+	}()
+	fmt.Println("Server succesfully started on port :50051")
+
+	// Right way to stop the server using a SHUTDOWN HOOK
+	// Create a channel to receive OS signals
+	c := make(chan os.Signal)
+
+	// Relay os.Interrupt to our channel (os.Interrupt = CTRL+C)
+	// Ignore other incoming signals
+	signal.Notify(c, os.Interrupt)
+
+	// Block main routine until a signal is received
+	// As long as user doesn't press CTRL+C a message is not passed and our main routine keeps running
+	<-c
+
+	// After receiving CTRL+C Properly stop the server
+	fmt.Println("\nStopping the server...")
+	s.Stop()
+	listener.Close()
+	fmt.Println("Closing MongoDB connection")
+	db.Disconnect(mongoCtx)
+	fmt.Println("Done.")
 }
