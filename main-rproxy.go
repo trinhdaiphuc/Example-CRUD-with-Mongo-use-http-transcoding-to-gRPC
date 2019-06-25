@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net/http"
 
-	pb "./entity"
+	pb "ExampleGRPC/src/entity"
+
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"golang.org/x/net/context"
@@ -19,7 +21,7 @@ func RunEndPoint(address string, opts ...runtime.ServeMuxOption) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-
+	fmt.Println("Starting server on port :8080.")
 	mux := runtime.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
 	err := pb.RegisterEntityServiceHandlerFromEndpoint(ctx, mux, *entityEndpoint, dialOpts)
