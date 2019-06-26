@@ -9,7 +9,7 @@ import (
 	"os"
 	"os/signal"
 
-	pb "ExampleGRPC/src/entity"
+	pb "Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/src/entity"
 
 	"github.com/golang/glog"
 	"go.mongodb.org/mongo-driver/bson/primitive"

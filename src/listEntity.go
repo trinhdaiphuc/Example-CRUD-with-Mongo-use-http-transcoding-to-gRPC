@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	pb "ExampleGRPC/src/entity"
+	pb "Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/src/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
