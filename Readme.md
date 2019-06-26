@@ -11,7 +11,7 @@ go get
 ## Run server gRPC
 go run server/*.go
 ## Run server http 
-go run proxy/main-rproxy.go
+go run gateway/main.go
 
 ##-------Some example tests----------------##
 ## List entities
