@@ -1,15 +1,15 @@
 ##-----GENERATE FROM PROTOBUFFER FILE-----##
 
 ## Generating client and server code
-protoc -I/usr/local/include -I.  -I$GOPATH/src  -Ithird_party/googleapis  --go_out=plugins=grpc:. src/entity/entity.proto 
+protoc -I/usr/local/include -I.  -I$GOPATH/src  -Ithird_party/googleapis  --go_out=plugins=grpc:. server/entity/entity.proto 
 ## Generate reverse-proxy for your RESTful API
-protoc -I/usr/local/include -I. -I$GOPATH/src -Ithird_party/googleapis --grpc-gateway_out=logtostderr=true:. src/entity/entity.proto
+protoc -I/usr/local/include -I. -I$GOPATH/src -Ithird_party/googleapis --grpc-gateway_out=logtostderr=true:. server/entity/entity.proto
 
 ##-----RUN SERVER-------------------------##
 ## Run server gRPC
-go run src/*.go
+go run server/*.go
 ## Run server http 
-go run main-rproxy.go
+go run proxy/main-rproxy.go
 
 ##-------Some example tests----------------##
 ## List entities
