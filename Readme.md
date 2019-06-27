@@ -1,9 +1,3 @@
-##-----GENERATE FROM PROTOBUFFER FILE-----##
-## Generating client and server code
-protoc -I/usr/local/include -I.  -I$GOPATH/src  -Ithird_party/googleapis  --go_out=plugins=grpc:. server/entity/entity.proto 
-## Generate reverse-proxy for your RESTful API
-protoc -I/usr/local/include -I. -I$GOPATH/src -Ithird_party/googleapis --grpc-gateway_out=logtostderr=true:. server/entity/entity.proto
-
 ##-----GET LIBRARIES----------------------##
 ## Run this command line
 go get
