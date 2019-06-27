@@ -38,6 +38,6 @@ curl -X PUT 'http://localhost:8080/entities' \
 
 curl -X DELETE "http://localhost:8080/entities/5d11e8ee9dadaf6eef8599b9"
 
-##-------USE KONG AS API GATEWAY--------------##
+# USE KONG AS API GATEWAY
 ## If you want to use Kong (https://konghq.com/kong/) as API gateway. You can checkout to banch kong-api-gw
 git checkout kong-api-gw
