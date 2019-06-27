@@ -5,6 +5,7 @@ protoc -I/usr/local/include -I.  -I$GOPATH/src  -Ithird_party/googleapis  --go_o
 protoc -I/usr/local/include -I. -I$GOPATH/src -Ithird_party/googleapis --grpc-gateway_out=logtostderr=true:. server/entity/entity.proto
 
 ##-----GET LIBRARIES----------------------##
+## Run this command line
 go get
 
 ##-----RUN SERVER-------------------------##
@@ -26,3 +27,7 @@ curl -X PUT 'http://localhost:8080/entities' \
 -d '{"id":"5d11e8ee9dadaf6eef8599b9","name":"Phuc qua dep trai","description":"Kha la banh","url":"phucdeptrai.com.vn"}'
 ## Delete entity
 curl -X DELETE "http://localhost:8080/entities/5d11e8ee9dadaf6eef8599b9"
+
+##-------USE KONG AS API GATEWAY--------------##
+## If you want to use Kong (https://konghq.com/kong/) as API gateway. You can checkout to banch kong-api-gw
+git checkout kong-api-gw
