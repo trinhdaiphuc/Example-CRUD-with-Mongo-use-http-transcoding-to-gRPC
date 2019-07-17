@@ -40,4 +40,5 @@ Install MongoDB and make sure it's running on localhost:27017
 
 ## USE KONG AS API GATEWAY
 - If you want to use Kong (https://konghq.com/kong/) as API gateway. You can checkout to banch kong-api-gw
+
 `git checkout kong-api-gw`
