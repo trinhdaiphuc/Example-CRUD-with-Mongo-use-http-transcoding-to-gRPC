@@ -15,6 +15,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/x/mongo/driver"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/address"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/connstring"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/description"
 )
 
@@ -437,4 +438,44 @@ func TestSessionTimeout(t *testing.T) {
 			t.Errorf("session timeout minutes mismatch. got: %d. expected: 0", currDesc.SessionTimeoutMinutes)
 		}
 	})
+}
+
+func TestMinPoolSize(t *testing.T) {
+	connStr := connstring.ConnString{
+		Hosts:          []string{"localhost:27017"},
+		MinPoolSize:    10,
+		MinPoolSizeSet: true,
+	}
+	topo, err := New(WithConnString(func(connstring.ConnString) connstring.ConnString { return connStr }))
+	if err != nil {
+		t.Errorf("topology.New shouldn't error. got: %v", err)
+	}
+	err = topo.Connect()
+	if err != nil {
+		t.Errorf("topology.Connect shouldn't error. got: %v", err)
+	}
+}
+
+func TestTopology_String_Race(t *testing.T) {
+	ch := make(chan bool)
+	topo := &Topology{
+		servers: make(map[address.Address]*Server),
+	}
+
+	go func() {
+		topo.serversLock.Lock()
+		srv := &Server{}
+		srv.desc.Store(description.Server{})
+		topo.servers[address.Address("127.0.0.1:27017")] = srv
+		topo.serversLock.Unlock()
+		ch <- true
+	}()
+
+	go func() {
+		topo.String()
+		ch <- true
+	}()
+
+	<-ch
+	<-ch
 }
