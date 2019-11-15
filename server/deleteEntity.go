@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// DeleteEntity is a gRPC function to delete an entity in MongoDB
 func (s *EntityServiceServer) DeleteEntity(ctx context.Context, req *pb.DeleteEntityReq) (*pb.DeleteEntityRes, error) {
 	// Get the ID (string) from the request message and convert it to an Object ID
 	oid, err := primitive.ObjectIDFromHex(req.GetId())

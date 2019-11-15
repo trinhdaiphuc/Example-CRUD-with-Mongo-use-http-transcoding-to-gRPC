@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// CreateEntity is a gRPC function to create an entity in MongoDB
 func (s *EntityServiceServer) CreateEntity(ctx context.Context, req *pb.CreateEntityReq) (*pb.CreateEntityRes, error) {
 	// Essentially doing req.Entity to access the struct with a nil check
 	entity := req.GetEntity()

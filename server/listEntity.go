@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// ListEntities is a gRPC function to list all entities in MongoDB
 func (s *EntityServiceServer) ListEntities(req *pb.ListEntitiesReq, stream pb.EntityService_ListEntitiesServer) error {
 	// Initiate a EntityItem type to write decoded data to
 	data := &EntityItem{}

@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// UpdateEntity is a gRPC function to update an entity in MongoDB
 func (s *EntityServiceServer) UpdateEntity(ctx context.Context, req *pb.UpdateEntityReq) (*pb.UpdateEntityRes, error) {
 	// Get the Entity data from the request
 	Entity := req.GetEntity()

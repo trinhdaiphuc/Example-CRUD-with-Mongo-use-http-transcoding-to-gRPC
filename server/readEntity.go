@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// ReadEntity is a gRPC function to get an entity in MongoDB
 func (s *EntityServiceServer) ReadEntity(ctx context.Context, req *pb.ReadEntityReq) (*pb.ReadEntityRes, error) {
 	// convert string id (from proto) to mongoDB ObjectId
 	oid, err := primitive.ObjectIDFromHex(req.GetId())
