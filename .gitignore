@@ -2,5 +2,6 @@
 .vscode/
 .idea/
 
-entity.pb.go
-entity.pb.gw.go
+*.pb*
+*.env
+bin/

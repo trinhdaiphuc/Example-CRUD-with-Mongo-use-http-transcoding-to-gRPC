@@ -5,7 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 
+	"github.com/joho/godotenv"
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
 
 	"github.com/golang/glog"
@@ -14,26 +17,22 @@ import (
 	"google.golang.org/grpc"
 )
 
-var (
-	entityEndpoint = flag.String("entity_endpoint", "localhost:50051", "endpoint of EntityService")
-)
-
 type errorBody struct {
 	Message string `json:"message,omitempty"`
-	Details struct {
-		Error string `json:"-"`
-	} `json:"detail"`
+	Details string `json:"detail"`
 }
 
 func CustomHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, _ *http.Request, err error) {
 	const fallback = `{"error": "failed to marshal error message"}`
 	fmt.Println("Custom HTTP error ->")
-	fmt.Println(grpc.ErrorDesc(err), grpc.Code(err), err)
+	fmt.Println("Message: ", grpc.ErrorDesc(err))
+	fmt.Println("Code: ", grpc.Code(err))
 
 	w.Header().Set("Content-type", marshaler.ContentType())
 	w.WriteHeader(runtime.HTTPStatusFromCode(grpc.Code(err)))
 	jErr := json.NewEncoder(w).Encode(errorBody{
 		Message: grpc.ErrorDesc(err),
+		Details: strconv.Itoa(int(grpc.Code(err))),
 	})
 
 	if jErr != nil {
@@ -46,14 +45,22 @@ func RunEndPoint(address string, opts ...runtime.ServeMuxOption) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	fmt.Println("Starting server on port :8080.")
+	runtime.HTTPError = CustomHTTPError
 	mux := runtime.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
-	err := pb.RegisterEntityServiceHandlerFromEndpoint(ctx, mux, *entityEndpoint, dialOpts)
+
+	err := godotenv.Load()
+	entityEndpoint := flag.String("entity_endpoint", os.Getenv("SERVER_HOST"), "endpoint of EntityService")
+
+	err = pb.RegisterEntityServiceHandlerFromEndpoint(ctx, mux, *entityEndpoint, dialOpts)
 	if err != nil {
 		return err
 	}
 
-	http.ListenAndServe(address, mux)
+	err = http.ListenAndServe(address, mux)
+	if err != nil {
+		fmt.Println("Error when listen ", err)
+	}
 	return nil
 }
 

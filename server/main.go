@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/joho/godotenv"
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
 
 	"github.com/golang/glog"
@@ -35,16 +36,17 @@ type EntityItem struct {
 func main() {
 	// Configure 'log' package to give file name and line number on eg. log.Fatal
 	// Pipe flags to one another (log.LstdFLags = log.Ldate | log.Ltime)
+	err := godotenv.Load()
 	flag.Parse()
 	defer glog.Flush()
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	fmt.Println("Starting server on port :50051...")
+	fmt.Println("Starting server on port :51051...")
 
-	// Start our listener, 50051 is the default gRPC port
-	listener, err := net.Listen("tcp", ":50051")
+	// Start our listener, 51051 is the default gRPC port
+	listener, err := net.Listen("tcp", ":51051")
 	// Handle errors if any
 	if err != nil {
-		log.Fatalf("Unable to listen on port :50051: %v", err)
+		log.Fatalf("Unable to listen on port :51051: %v", err)
 	}
 	// Set options, here we can configure things like TLS support
 	opts := []grpc.ServerOption{}
@@ -62,7 +64,8 @@ func main() {
 	mongoCtx = context.Background()
 
 	// Connect takes in a context and options, the connection URI is the only option we pass for now
-	db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI(os.Getenv("DB_HOST")))
+	fmt.Println("DB_HOST ", os.Getenv("DB_HOST"))
 	// Handle potential errors
 	if err != nil {
 		log.Fatal(err)
@@ -86,7 +89,7 @@ func main() {
 			glog.Fatal(err)
 		}
 	}()
-	fmt.Println("Server succesfully started on port :50051")
+	fmt.Println("Server succesfully started on port :51051")
 
 	// Right way to stop the server using a SHUTDOWN HOOK
 	// Create a channel to receive OS signals

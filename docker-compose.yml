@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  grpc_app:
+    build:
+      dockerfile: Dockerfile.app
+      context: .
+    volumes:
+      - ./server:/app/src/server
+    depends_on:
+      - mongo
+    ports:
+      - 51051:51051
+    environment:
+      - DB_HOST=mongodb://mongo:27017
+      - GRPC_VERBOSITY=debug
+
+  grpc_gateway:
+    build:
+      dockerfile: Dockerfile.gateway
+      context: .
+    volumes:
+      - ./gateway:/app/src/gateway
+    depends_on:
+      - grpc_app
+    ports:
+      - 8080:8080
+    environment:
+      - GRPC_VERBOSITY=debug
+      - SERVER_HOST=grpc_app:51051
+
+  mongo:
+    image: "mongo:4.2.1"
+    volumes:
+      - "mongo:/data/db"
+    ports:
+      - "27100:27017"
+
+volumes:
+  mongo:
