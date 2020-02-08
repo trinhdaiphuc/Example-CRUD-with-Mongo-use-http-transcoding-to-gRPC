@@ -9,29 +9,17 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/joho/godotenv"
-	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
-
 	"github.com/golang/glog"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"github.com/joho/godotenv"
+	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
+	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
+	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/services"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
 )
 
 // Global variables for db connection , collection and context
-var db *mongo.Client
-var entitydb *mongo.Collection
-var mongoCtx context.Context
-
-type EntityServiceServer struct{}
-
-type EntityItem struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	Name        string             `bson:"name"`
-	Description string             `bson:"description"`
-	URL         string             `bson:"url"`
-}
 
 func main() {
 	// Configure 'log' package to give file name and line number on eg. log.Fatal
@@ -53,7 +41,7 @@ func main() {
 	// Create new gRPC server with (blank) options
 	s := grpc.NewServer(opts...)
 	// Create EntityService type
-	srv := &EntityServiceServer{}
+	srv := &services.EntityServiceServer{}
 	// Register the service with the server
 	pb.RegisterEntityServiceServer(s, srv)
 
@@ -61,10 +49,10 @@ func main() {
 	fmt.Println("Connecting to MongoDB...")
 
 	// non-nil empty context
-	mongoCtx = context.Background()
+	mongoctx := context.Background()
 
 	// Connect takes in a context and options, the connection URI is the only option we pass for now
-	db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI(os.Getenv("DB_HOST")))
+	db, err := mongo.Connect(mongoctx, options.Client().ApplyURI(os.Getenv("DB_HOST")))
 	fmt.Println("DB_HOST ", os.Getenv("DB_HOST"))
 	// Handle potential errors
 	if err != nil {
@@ -73,14 +61,14 @@ func main() {
 	}
 
 	// Check whether the connection was succesful by pinging the MongoDB server
-	err = db.Ping(mongoCtx, nil)
+	err = db.Ping(mongoctx, nil)
 	if err != nil {
 		log.Fatalf("Could not connect to MongoDB: %v\n", err)
 	} else {
 		fmt.Println("Connected to Mongodb")
 	}
 	// Bind our collection to our global variable for use in other methods
-	entitydb = db.Database("mydb").Collection("entity")
+	srv.EntityCollection = models.NewEntityCollection(db)
 
 	// Start the server in a child routine
 	go func() {
@@ -108,6 +96,6 @@ func main() {
 	s.Stop()
 	listener.Close()
 	fmt.Println("Closing MongoDB connection")
-	db.Disconnect(mongoCtx)
+	db.Disconnect(mongoctx)
 	fmt.Println("Done.")
 }

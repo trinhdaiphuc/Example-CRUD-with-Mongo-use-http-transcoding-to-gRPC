@@ -1,4 +1,4 @@
-package main
+package services
 
 import (
 	"context"
@@ -20,9 +20,10 @@ func (s *EntityServiceServer) DeleteEntity(ctx context.Context, req *pb.DeleteEn
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not convert to ObjectId: %v", err))
 	}
+
 	// DeleteOne returns DeleteResult which is a struct containing the amount of deleted docs (in this case only 1 always)
 	// So we return a boolean instead
-	_, err = entitydb.DeleteOne(ctx, bson.M{"_id": oid})
+	_, err = s.EntityCollection.DeleteOne(ctx, bson.M{"_id": oid})
 	// Check for errors
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find/delete Entity with id %s: %v", req.GetId(), err))

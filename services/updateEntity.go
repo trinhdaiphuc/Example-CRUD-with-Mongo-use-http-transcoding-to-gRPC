@@ -1,9 +1,10 @@
-package main
+package services
 
 import (
 	"context"
 	"fmt"
 
+	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -39,10 +40,10 @@ func (s *EntityServiceServer) UpdateEntity(ctx context.Context, req *pb.UpdateEn
 
 	// Result is the BSON encoded result
 	// To return the updated document instead of original we have to add options.
-	result := entitydb.FindOneAndUpdate(ctx, filter, bson.M{"$set": update}, options.FindOneAndUpdate().SetReturnDocument(1))
+	result := s.EntityCollection.FindOneAndUpdate(ctx, filter, bson.M{"$set": update}, options.FindOneAndUpdate().SetReturnDocument(1))
 
 	// Decode result and write it to 'decoded'
-	decoded := EntityItem{}
+	decoded := &models.EntityItem{}
 	err = result.Decode(&decoded)
 	if err != nil {
 		return nil, status.Errorf(

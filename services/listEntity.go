@@ -1,9 +1,10 @@
-package main
+package services
 
 import (
 	"context"
 	"fmt"
 
+	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -14,9 +15,9 @@ import (
 // ListEntities is a gRPC function to list all entities in MongoDB
 func (s *EntityServiceServer) ListEntities(req *pb.ListEntitiesReq, stream pb.EntityService_ListEntitiesServer) error {
 	// Initiate a EntityItem type to write decoded data to
-	data := &EntityItem{}
+	data := &models.EntityItem{}
 	// collection.Find returns a cursor for our (empty) query
-	cursor, err := entitydb.Find(context.Background(), bson.M{})
+	cursor, err := s.EntityCollection.Find(context.Background(), bson.M{})
 	if cursor == nil {
 		status.New(codes.FailedPrecondition, "No users have been created")
 	}
@@ -26,7 +27,6 @@ func (s *EntityServiceServer) ListEntities(req *pb.ListEntitiesReq, stream pb.En
 	// An expression with defer will be called at the end of the function
 	defer cursor.Close(context.Background())
 	// cursor.Next() returns a boolean, if false there are no more items and loop will break
-	var Entities []*pb.Entity
 	for cursor.Next(context.Background()) {
 		// Decode the data at the current pointer and write it to data
 		err := cursor.Decode(data)
@@ -35,14 +35,12 @@ func (s *EntityServiceServer) ListEntities(req *pb.ListEntitiesReq, stream pb.En
 			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
 		}
 		// If no error is found send Entity over stream
-		entityItem := &pb.Entity{
+		stream.Send(&pb.ListEntitiesRes{Entity: &pb.Entity{
 			Id:          data.ID.Hex(),
 			Name:        data.Name,
 			Description: data.Description,
 			Url:         data.URL,
-		}
-
-		Entities = append(Entities, entityItem)
+		}})
 	}
 
 	// Check if the cursor has any errors
@@ -50,8 +48,5 @@ func (s *EntityServiceServer) ListEntities(req *pb.ListEntitiesReq, stream pb.En
 		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
 	}
 
-	stream.Send(&pb.ListEntitiesRes{
-		Entity: Entities,
-	})
 	return nil
 }

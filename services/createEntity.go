@@ -1,12 +1,13 @@
-package main
+package services
 
 import (
 	"context"
 	"fmt"
 
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -16,7 +17,7 @@ func (s *EntityServiceServer) CreateEntity(ctx context.Context, req *pb.CreateEn
 	// Essentially doing req.Entity to access the struct with a nil check
 	entity := req.GetEntity()
 	// Now we have to convert this into a EtityItem type to convert into BSON
-	data := EntityItem{
+	data := &models.EntityItem{
 		// ID:    Empty, so it gets omitted and MongoDB generates a unique Object ID upon insertion.
 		Name:        entity.GetName(),
 		Description: entity.GetDescription(),
@@ -24,7 +25,7 @@ func (s *EntityServiceServer) CreateEntity(ctx context.Context, req *pb.CreateEn
 	}
 
 	// Insert the data into the database, result contains the newly generated Object ID for the new document
-	result, err := entitydb.InsertOne(mongoCtx, data)
+	result, err := s.EntityCollection.InsertOne(ctx, data)
 	// check for potential errors
 	if err != nil {
 		// return internal gRPC error to be handled later
