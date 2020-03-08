@@ -46,3 +46,9 @@ Install MongoDB and make sure it's running on localhost:27017
 - If you want to use Kong (https://konghq.com/kong/) as API gateway. You can checkout to banch kong-api-gw
 
 `git checkout kong-api-gw`
+
+## USE ENVOY AS API GATEWAY
+
+- If you want to use Kong (https://www.envoyproxy.io/) as API gateway. You can checkout to banch kong-api-gw
+
+`git checkout envoy`
