@@ -27,7 +27,7 @@ services:
       - 8080:8080
     environment:
       - GRPC_VERBOSITY=debug
-      - SERVER_HOST=grpc_app:50051
+      - ENTITY_SERVER_HOST=grpc_app:50051
 
   mongo:
     image: "mongo:4.2.1"
