@@ -79,6 +79,6 @@ message DeleteEntityRes {
 message ListEntitiesReq {}
 
 message ListEntitiesRes {
-  repeated Entity entity = 1;
+  Entity entity = 1;
 }
 
