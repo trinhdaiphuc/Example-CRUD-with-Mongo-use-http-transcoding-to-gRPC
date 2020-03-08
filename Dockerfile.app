@@ -9,7 +9,7 @@ ADD . /app/src
 
 WORKDIR /app/src
 
-RUN go build -o bin/server server/*.go
+RUN go build -o bin/server main.go
 
 FROM alpine:3.10
 WORKDIR /app

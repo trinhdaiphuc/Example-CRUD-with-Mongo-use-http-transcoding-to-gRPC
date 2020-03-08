@@ -50,7 +50,7 @@ func RunEndPoint(address string, opts ...runtime.ServeMuxOption) error {
 	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
 
 	err := godotenv.Load()
-	entityEndpoint := flag.String("entity_endpoint", os.Getenv("SERVER_HOST"), "endpoint of EntityService")
+	entityEndpoint := flag.String("entity_endpoint", os.Getenv("ENTITY_SERVER_HOST"), "endpoint of EntityService")
 
 	err = pb.RegisterEntityServiceHandlerFromEndpoint(ctx, mux, *entityEndpoint, dialOpts)
 	if err != nil {
