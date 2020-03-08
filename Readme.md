@@ -16,7 +16,7 @@ Install MongoDB and make sure it's running on localhost:27017
 
 ## Start Server
 
-`go run server/*.go`
+`go run main.go`
 `go run gateway/main.go`
 
 ## Example API Calls
