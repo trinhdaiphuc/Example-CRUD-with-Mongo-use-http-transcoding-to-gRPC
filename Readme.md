@@ -1,23 +1,13 @@
 # Example project using gRPC and http transcoding
 
-## Install tools
-
-Install dep tool: https://golang.github.io/dep/docs/installation.html  
-Install MongoDB and make sure it's running on localhost:27017
-
-## Make sure all the dependencies is in sync
-
-`dep status` && `dep ensure`
-
 ## Generate gRPC stub :
   Generating client and server code and reverse-proxy for your RESTful API:
 
-`make`
+`make pb`
 
-## Start Server
+## Start project
 
-`go run main.go`
-`go run gateway/main.go`
+`docker-compose up`
 
 ## Example API Calls
 
