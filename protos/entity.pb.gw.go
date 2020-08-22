@@ -15,6 +15,7 @@ import (
 
 	"github.com/golang/protobuf/descriptor"
 	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc"
@@ -244,7 +245,7 @@ func local_request_EntityService_DeleteEntity_0(ctx context.Context, marshaler r
 }
 
 func request_EntityService_ListEntities_0(ctx context.Context, marshaler runtime.Marshaler, client EntityServiceClient, req *http.Request, pathParams map[string]string) (EntityService_ListEntitiesClient, runtime.ServerMetadata, error) {
-	var protoReq ListEntitiesReq
+	var protoReq empty.Empty
 	var metadata runtime.ServerMetadata
 
 	stream, err := client.ListEntities(ctx, &protoReq)

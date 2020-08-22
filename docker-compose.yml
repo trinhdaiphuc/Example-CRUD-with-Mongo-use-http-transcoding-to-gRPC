@@ -1,12 +1,24 @@
 version: "3"
 
 services:
+  envoy-proxy:
+    image: envoyproxy/envoy-dev
+    ports:
+      - 8080:51051
+    volumes:
+      - ./protos/proto.pb:/data/proto.pb
+      - ./envoy-proxy.yaml:/etc/envoy/envoy.yaml
+    depends_on:
+      - grpc_app
+    environment:
+      - GRPC_VERBOSITY=debug
+
   grpc_app:
     build:
       dockerfile: Dockerfile.app
       context: .
     volumes:
-      - ./server:/app/src/server
+      - .:/app/src/server
     depends_on:
       - mongo
     ports:
@@ -30,11 +42,11 @@ services:
       - ENTITY_SERVER_HOST=grpc_app:50051
 
   mongo:
-    image: "mongo:4.2.1"
+    image: mongo:latest
     volumes:
-      - "mongo:/data/db"
+      - mongo:/data/db
     ports:
-      - "27100:27017"
+      - 27100:27017
 
 volumes:
   mongo:

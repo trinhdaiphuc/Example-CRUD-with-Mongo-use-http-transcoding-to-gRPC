@@ -16,6 +16,4 @@ WORKDIR /app
 
 COPY --from=build /app/src/bin/ /app/
 
-RUN ls
-
 ENTRYPOINT ["/app/server"]
