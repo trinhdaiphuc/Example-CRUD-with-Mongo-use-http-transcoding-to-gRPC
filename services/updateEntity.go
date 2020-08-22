@@ -20,7 +20,7 @@ func (s *EntityServiceServer) UpdateEntity(ctx context.Context, req *pb.UpdateEn
 	Entity := req.GetEntity()
 
 	// Convert the Id string to a MongoDB ObjectId
-	oid, err := primitive.ObjectIDFromHex(Entity.GetId())
+	oid, err := primitive.ObjectIDFromHex(req.GetId())
 	if err != nil {
 		return nil, status.Errorf(
 			codes.InvalidArgument,

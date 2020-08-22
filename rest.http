@@ -1,0 +1,26 @@
+### Create entity
+POST http://localhost:8080/entities
+
+{
+  "name":"Phuc qua dep trai",
+  "description":"Kha la banh",
+  "url":"phucdeptrai.com.vn"
+}
+
+### Get a entity
+GET http://localhost:8080/entities/5e3e24fbc44663df8aa04748
+
+### List entities
+GET http://localhost:8080/entities
+
+### Update a entity
+PUT http://localhost:8080/entities/5e3e24fbc44663df8aa04748
+
+{
+  "name":"Phuc dep trai vai",
+  "description":"Hoi banh",
+  "url":"phuchotboy.com.vn"
+}
+
+### Delete a entity
+DELETE http://localhost:8080/entities/5e3e24fbc44663df8aa04748

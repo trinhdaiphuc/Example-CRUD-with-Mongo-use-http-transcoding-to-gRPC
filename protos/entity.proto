@@ -19,7 +19,7 @@ service EntityService {
   }
   rpc UpdateEntity(UpdateEntityReq) returns (UpdateEntityRes) {
     option (google.api.http) = {
-      put: "/entities"
+      put: "/entities/{id}"
       body: "entity"
     };
   }
@@ -53,7 +53,8 @@ message CreateEntityRes {
 }
 
 message UpdateEntityReq {
-  Entity entity = 1;
+  string id = 1;
+  Entity entity = 2;
 }
 
 message UpdateEntityRes {

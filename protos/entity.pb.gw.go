@@ -131,6 +131,24 @@ func request_EntityService_UpdateEntity_0(ctx context.Context, marshaler runtime
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+
 	msg, err := client.UpdateEntity(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -146,6 +164,24 @@ func local_request_EntityService_UpdateEntity_0(ctx context.Context, marshaler r
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.Entity); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.UpdateEntity(ctx, &protoReq)
@@ -465,7 +501,7 @@ var (
 
 	pattern_EntityService_ReadEntity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"entities", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_EntityService_UpdateEntity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"entities"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EntityService_UpdateEntity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"entities", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_EntityService_DeleteEntity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"entities", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
