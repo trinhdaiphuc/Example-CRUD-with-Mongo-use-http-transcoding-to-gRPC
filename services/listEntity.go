@@ -10,10 +10,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // ListEntities is a gRPC function to list all entities in MongoDB
-func (s *EntityServiceServer) ListEntities(req *pb.ListEntitiesReq, stream pb.EntityService_ListEntitiesServer) error {
+func (s *EntityServiceServer) ListEntities(req *emptypb.Empty, stream pb.EntityService_ListEntitiesServer) error {
 	// Initiate a EntityItem type to write decoded data to
 	data := &models.EntityItem{}
 	// collection.Find returns a cursor for our (empty) query

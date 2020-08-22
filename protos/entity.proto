@@ -2,6 +2,7 @@ syntax = "proto3";
 package entity;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 // The entity service definition with http transcoding
 service EntityService {
@@ -28,7 +29,7 @@ service EntityService {
       delete: "/entities/{id}" 
     };
   }
-  rpc ListEntities(ListEntitiesReq) returns (stream ListEntitiesRes) {
+  rpc ListEntities(google.protobuf.Empty) returns (stream ListEntitiesRes) {
     option (google.api.http) = {
       get: "/entities"
     };
