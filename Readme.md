@@ -1,45 +1,59 @@
 # Example project using gRPC and http transcoding
 
+> This project is an example using gRPC gateway and Envoy proxy to transcode gRPC API server into REST API.
+
 ## Generate gRPC stub
 
-  Generating client and server code and reverse-proxy for your RESTful API:
+Generating client and server code and reverse-proxy for your RESTful API:
 
-`make pb`
+```shell
+make pb
+```
 
 ## Start project
 
-`docker-compose up`
+- Use grpc gateway
 
-## Example API Calls
+```shell
+make dc-gateway
+```
 
-### List entities
+- Use envoy
 
-`curl -X GET 'http://localhost:8080/entities'`
+```shell
+make dc-envoy
+```
 
-### Create entity
+## Example API Calls:
 
-`curl -X POST 'http://localhost:8080/entities' -d '{"name":"Phuc qua dep trai","description":"Kha la banh","url":"phucdeptrai.com.vn"}'`
+_Install extension [REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) on VS Code for easy send api call in **rest.http** file_
 
-### Read entity
+- List entities
 
-`curl -X GET "http://localhost:8080/entities/5d11e96b9dadaf6eef8599be"`
+```shell
+curl -X GET 'http://localhost:8080/entities'
+```
 
-### Update entity
+- Create entity
 
-`curl -X PUT 'http://localhost:8080/entities' -d '{"id":"5dff0ab0ac327677d38754dd","name":"Phuc dep trai vai","description":"Qua la banh","url":"phuchotboy.com.vn"}'`
+```shell
+curl -X POST 'http://localhost:8080/entities' -d '{"name":"Phuc qua dep trai","description":"Kha la banh","url":"phucdeptrai.com.vn"}'
+```
 
-### Delete entity
+- Read entity
 
-`curl -X DELETE "http://localhost:8080/entities/5d11e8ee9dadaf6eef8599b9"`
+```shell
+curl -X GET "http://localhost:8080/entities/5d11e96b9dadaf6eef8599be"
+```
 
-## USE KONG AS API GATEWAY
+- Update entity
 
-- If you want to use Kong (<https://konghq.com/kong/>) as API gateway. You can checkout to banch kong-api-gw
+```shell
+curl -X PUT 'http://localhost:8080/entities' -d '{"id":"5dff0ab0ac327677d38754dd","name":"Phuc dep trai vai","description":"Qua la banh","url":"phuchotboy.com.vn"}'
+```
 
-`git checkout kong-api-gw`
+- Delete entity
 
-## USE ENVOY AS API GATEWAY
-
-- If you want to use Kong (<https://www.envoyproxy.io/>) as API gateway. You can checkout to banch kong-api-gw
-
-`git checkout envoy`
+```shell
+curl -X DELETE "http://localhost:8080/entities/5d11e8ee9dadaf6eef8599b9"
+```

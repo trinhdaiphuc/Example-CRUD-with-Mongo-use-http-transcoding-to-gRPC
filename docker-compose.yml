@@ -2,9 +2,9 @@ version: "3"
 
 services:
   envoy-proxy:
-    image: envoyproxy/envoy-dev
+    image: envoyproxy/envoy:v1.15.0
     ports:
-      - 8080:51051
+      - 8081:51051
     volumes:
       - ./protos/proto.pb:/data/proto.pb
       - ./envoy-proxy.yaml:/etc/envoy/envoy.yaml
@@ -21,8 +21,6 @@ services:
       - .:/app/src/server
     depends_on:
       - mongo
-    ports:
-      - 51051:51051
     environment:
       - DB_HOST=mongodb://mongo:27017
       - GRPC_VERBOSITY=debug
@@ -45,8 +43,6 @@ services:
     image: mongo:latest
     volumes:
       - mongo:/data/db
-    ports:
-      - 27100:27017
 
 volumes:
   mongo:

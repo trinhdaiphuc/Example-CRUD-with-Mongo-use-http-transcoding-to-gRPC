@@ -9,10 +9,10 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
-	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos"
+	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos/entity"
 
 	"github.com/golang/glog"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
@@ -28,7 +28,6 @@ func CustomHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtime
 	fmt.Println("Message: ", grpc.ErrorDesc(err))
 	fmt.Println("Code: ", grpc.Code(err))
 
-	w.Header().Set("Content-type", marshaler.ContentType())
 	w.WriteHeader(runtime.HTTPStatusFromCode(grpc.Code(err)))
 	jErr := json.NewEncoder(w).Encode(errorBody{
 		Message: grpc.ErrorDesc(err),
@@ -45,8 +44,7 @@ func RunEndPoint(address string, opts ...runtime.ServeMuxOption) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	fmt.Println("Starting server on port :8080.")
-	runtime.HTTPError = CustomHTTPError
-	mux := runtime.NewServeMux(opts...)
+	mux := runtime.NewServeMux(append(opts, runtime.WithErrorHandler(CustomHTTPError))...)
 	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
 
 	err := godotenv.Load()
