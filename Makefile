@@ -9,10 +9,6 @@ pb:
 build:
 	- go build -o bin/grpc-service main.go
 	- go build -o bin/gateway gateway/main.go
-	- go build -o bin/client clients/main.go
-
-client:
-	- ./bin/client
 
 grpc-service:
 	- ./bin/grpc-service
