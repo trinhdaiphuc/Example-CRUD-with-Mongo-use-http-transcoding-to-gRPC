@@ -1,16 +1,26 @@
 # Example project using gRPC and http transcoding
 
-> This project is an example using gRPC gateway and Envoy proxy to transcode gRPC API server into REST API.
+> This project is an example using [gRPC gateway](https://grpc-ecosystem.github.io/grpc-gateway/), 
+> [Envoy proxy](https://www.envoyproxy.io/) to transcode gRPC API server into REST API server. Furthermore, I use 
+> [denny framework](https://github.com/whatvn/denny) which is not transcode gRPC API server into REST API server. Denny 
+> not only exposes gRPC and http api server in 1 port but also invoke the code you wrote in grpc functions, does not 
+> trigger grpc call when you call http.
 
 ## Generate gRPC stub
 
-Generating client and server code and reverse-proxy for your RESTful API:
+Generating client and server code and reverse-proxy for your REST API:
 
 ```shell
-make pb
+make gen-protobuf
 ```
 
 ## Start project
+
+- Run all project
+
+```shell
+make dc-all
+```
 
 - Use grpc gateway
 
@@ -24,9 +34,16 @@ make dc-gateway
 make dc-envoy
 ```
 
+- Use denny
+
+```shell
+make dc-denny
+```
+
 ## Example API Calls:
 
-_Install extension [REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) on VS Code for easy send api call in **rest.http** file_
+> Install extension [REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) on VS Code for 
+> easy send api call with ***.http** files in **/client** folder
 
 - List entities
 

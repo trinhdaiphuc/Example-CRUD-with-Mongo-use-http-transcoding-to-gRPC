@@ -11,8 +11,6 @@ services:
       - ./envoy-proxy.yaml:/etc/envoy/envoy.yaml
     depends_on:
       - grpc_app
-    environment:
-      - GRPC_VERBOSITY=debug
 
   grpc_app:
     container_name: grpc-app
@@ -57,7 +55,6 @@ services:
     image: mongo:latest
     volumes:
       - mongo:/data/db
-    ports:
-      - 27017:27017
+
 volumes:
   mongo:

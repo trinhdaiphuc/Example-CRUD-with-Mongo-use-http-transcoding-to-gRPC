@@ -84,7 +84,7 @@ func main() {
 	setupHTTPHandler(server, db)
 
 	// start server in dual mode
-	if err := server.GraceFulStart(":8082"); err != nil {
+	if err := server.GraceFulStart(":8080"); err != nil {
 		panic(err)
 	}
 }

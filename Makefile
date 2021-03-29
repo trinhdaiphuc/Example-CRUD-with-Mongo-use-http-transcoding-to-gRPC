@@ -1,4 +1,9 @@
-pb:
+.DEFAULT_GOAL := dc-all
+
+install-third-party:
+	git submodule update --init
+
+gen-protobuf: install-third-party
 	protoc -Iprotos/ protos/*.proto\
 		-Ithird_party/googleapis \
 		-Ithird_party/protoc-gen-validate \
@@ -25,3 +30,6 @@ dc-denny:
 
 dc-denny-build:
 	- docker-compose up --build denny mongo
+
+dc-all: gen-protobuf
+	- docker-compose up
