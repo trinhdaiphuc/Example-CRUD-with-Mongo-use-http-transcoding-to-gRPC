@@ -2,6 +2,7 @@ version: "3"
 
 services:
   envoy-proxy:
+    container_name: envoy-proxy
     image: envoyproxy/envoy:v1.15.0
     ports:
       - 8081:51051
@@ -14,18 +15,30 @@ services:
       - GRPC_VERBOSITY=debug
 
   grpc_app:
+    container_name: grpc-app
     build:
       dockerfile: Dockerfile.app
       context: .
-    volumes:
-      - .:/app/src/server
     depends_on:
       - mongo
     environment:
       - DB_HOST=mongodb://mongo:27017
-      - GRPC_VERBOSITY=debug
+
+  denny:
+    container_name: denny
+    build:
+      dockerfile: Dockerfile.denny
+      context: .
+    depends_on:
+      - mongo
+    ports:
+      - 8082:8080
+    environment:
+      - DB_HOST=mongodb://mongo:27017
+      # - GIN_MODE=release # Use this for production environment
 
   grpc_gateway:
+    container_name: grpc-gateway
     build:
       dockerfile: Dockerfile.gateway
       context: .
@@ -40,9 +53,11 @@ services:
       - ENTITY_SERVER_HOST=grpc_app:50051
 
   mongo:
+    container_name: mongo
     image: mongo:latest
     volumes:
       - mongo:/data/db
-
+    ports:
+      - 27017:27017
 volumes:
   mongo:

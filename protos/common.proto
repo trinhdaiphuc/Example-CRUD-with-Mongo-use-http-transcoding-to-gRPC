@@ -1,0 +1,58 @@
+syntax = "proto3";
+package entity;
+
+option go_package = "./entity";
+
+import "validate/validate.proto";
+
+// Entity message type for responding
+message Entity {
+  string id = 1;
+  string name = 2 [(validate.rules).string.min_len = 2];
+  string description = 3;
+  string url = 4 [(validate.rules).string.uri_ref = true];
+}
+
+// Defintion of request and respone for each services
+message CreateEntityReq {
+  Entity entity = 1 [(validate.rules).message.required = true];
+}
+
+message CreateEntityRes {
+  Entity entity = 1;
+}
+
+message UpdateEntityReqBody {
+  string name = 2 [(validate.rules).string.min_len = 2];
+  string description = 3;
+  string url = 4 [(validate.rules).string.uri_ref = true];
+}
+
+message UpdateEntityReq {
+  string id = 1 [(validate.rules).string.uuid = true];
+  UpdateEntityReqBody entity = 2 [(validate.rules).message.required = true];
+}
+
+message UpdateEntityRes {
+  Entity entity = 1;
+}
+
+message ReadEntityReq {
+  string id = 1 [(validate.rules).string.uuid = true];
+}
+
+message ReadEntityRes {
+  Entity entity = 1;
+}
+
+message DeleteEntityReq {
+  string id = 1 [(validate.rules).string.uuid = true];
+}
+
+message DeleteEntityRes {
+  bool success = 1;
+}
+
+message ListEntitiesRes {
+  repeated Entity entities = 1;
+}

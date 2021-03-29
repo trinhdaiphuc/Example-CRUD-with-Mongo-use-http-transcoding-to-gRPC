@@ -10,6 +10,9 @@ import (
 	"os/signal"
 
 	"github.com/golang/glog"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/joho/godotenv"
 	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos/entity"
@@ -37,11 +40,21 @@ func main() {
 		log.Fatalf("Unable to listen on port :50051: %v", err)
 	}
 	// Set options, here we can configure things like TLS support
-	opts := []grpc.ServerOption{}
+	// Set options, here we can configure things like middleware support
+	opts := []grpc.ServerOption{
+		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
+			grpc_validator.StreamServerInterceptor(),
+			grpc_prometheus.StreamServerInterceptor,
+		)),
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			grpc_validator.UnaryServerInterceptor(),
+			grpc_prometheus.UnaryServerInterceptor,
+		))}
+
 	// Create new gRPC server with (blank) options
 	s := grpc.NewServer(opts...)
 	// Create EntityService type
-	srv := &services.EntityServiceServer{}
+	srv := &services.Entities{}
 	// Register the service with the server
 	pb.RegisterEntityServiceServer(s, srv)
 
@@ -51,8 +64,12 @@ func main() {
 	// non-nil empty context
 	mongoctx := context.Background()
 
+	mongoURI := "mongodb://localhost:27017"
+	if len(os.Getenv("DB_HOST"))>0 {
+		mongoURI=os.Getenv("DB_HOST")
+	}
 	// Connect takes in a context and options, the connection URI is the only option we pass for now
-	db, err := mongo.Connect(mongoctx, options.Client().ApplyURI(os.Getenv("DB_HOST")))
+	db, err := mongo.Connect(mongoctx, options.Client().ApplyURI(mongoURI))
 	fmt.Println("DB_HOST ", os.Getenv("DB_HOST"))
 	// Handle potential errors
 	if err != nil {

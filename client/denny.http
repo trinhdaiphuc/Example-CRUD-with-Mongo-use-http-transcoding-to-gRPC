@@ -1,0 +1,43 @@
+### Create entity
+POST http://localhost:8082/entities/create-entity
+Content-Type: application/json
+
+{
+  "entity": {
+    "name": "Phuc qua dep trai",
+    "description": "Kha la banh",
+    "url": "phucdeptrai.com.vn"
+  }
+}
+
+### Get a entity
+POST http://localhost:8082/entities/read-entity
+Content-Type: application/json
+
+{
+  "id": "a3e9dd53-6f41-432c-9938-cc4ed761aa3b"
+}
+
+### List entities
+GET http://localhost:8082/entities/list-entities
+
+### Update a entity
+POST http://localhost:8082/entities/update-entity
+Content-Type: application/json
+
+{
+  "id": "a3e9dd53-6f41-432c-9938-cc4ed761aa3b",
+  "entity": {
+    "name": "Phuc dep trai vai",
+    "description": "Hoi banh",
+    "url": "phuchotboy.com.vn"
+  }
+}
+
+### Delete a entity
+POST http://localhost:8082/entities/delete-entity
+Content-Type: application/json
+
+{
+  "id": "a3e9dd53-6f41-432c-9938-cc4ed761aa3b"
+}

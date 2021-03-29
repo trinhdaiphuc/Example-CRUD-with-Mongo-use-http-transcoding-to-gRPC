@@ -2,6 +2,6 @@ package services
 
 import "go.mongodb.org/mongo-driver/mongo"
 
-type EntityServiceServer struct {
+type Entities struct {
 	EntityCollection *mongo.Collection
 }

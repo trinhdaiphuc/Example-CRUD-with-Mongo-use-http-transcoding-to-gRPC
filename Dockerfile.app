@@ -5,9 +5,14 @@ RUN apk update && apk add --virtual build-dependencies build-base --no-cache cur
 ENV GOROOT=/usr/local/go \
   GOPATH=/app
 
-ADD . /app/src
-
 WORKDIR /app/src
+
+COPY go.mod go.mod
+COPY go.sum go.sum
+
+RUN go mod download
+
+ADD . .
 
 RUN go build -o bin/server main.go
 

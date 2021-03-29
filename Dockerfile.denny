@@ -14,12 +14,11 @@ RUN go mod download
 
 ADD . .
 
-RUN go build -o bin/gateway gateway/main.go
+RUN go build -o bin/server denny/main.go
 
 FROM alpine:3.10
-
 WORKDIR /app
 
 COPY --from=build /app/src/bin/ /app/
 
-ENTRYPOINT ["/app/gateway"]
+ENTRYPOINT ["/app/server"]

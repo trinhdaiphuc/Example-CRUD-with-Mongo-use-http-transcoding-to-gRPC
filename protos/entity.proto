@@ -5,6 +5,7 @@ option go_package = "./entity";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "common.proto";
 
 // The entity service definition with http transcoding
 service EntityService {
@@ -31,58 +32,11 @@ service EntityService {
       delete: "/entities/{id}" 
     };
   }
-  rpc ListEntities(google.protobuf.Empty) returns (stream ListEntitiesRes) {
+  rpc ListEntities(google.protobuf.Empty) returns (ListEntitiesRes) {
     option (google.api.http) = {
       get: "/entities"
     };
   }
 }
 
-// Entity message type for responding
-message Entity {
-  string id = 1;
-  string name = 2;
-  string description = 3;
-  string url = 4;
-}
-
-// Defintion of request and respone for each services
-message CreateEntityReq {
-  Entity entity = 1;
-}
-
-message CreateEntityRes {
-  Entity entity = 1;
-}
-
-message UpdateEntityReq {
-  string id = 1;
-  Entity entity = 2;
-}
-
-message UpdateEntityRes {
-  Entity entity = 1;
-}
-
-message ReadEntityReq {
-  string id = 1;
-}
-
-message ReadEntityRes {
-  Entity entity = 1;
-}
-
-message DeleteEntityReq {
-  string id = 1;
-}
-
-message DeleteEntityRes {
-  bool success = 1;
-}
-
-message ListEntitiesReq {}
-
-message ListEntitiesRes {
-  Entity entity = 1;
-}
 
