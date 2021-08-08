@@ -16,7 +16,7 @@ ADD . .
 
 RUN go build -o bin/server main.go
 
-FROM alpine:3.10
+FROM alpine:3
 WORKDIR /app
 
 COPY --from=build /app/src/bin/ /app/
