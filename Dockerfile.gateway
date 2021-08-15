@@ -16,7 +16,7 @@ ADD . .
 
 RUN go build -o bin/gateway gateway/main.go
 
-FROM alpine:3.10
+FROM alpine:3
 
 WORKDIR /app
 
