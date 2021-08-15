@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-
 	uuid "github.com/satori/go.uuid"
 	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos/entity"
@@ -21,7 +20,7 @@ func (s *Entities) ReadEntity(ctx context.Context, req *pb.ReadEntityReq) (*pb.R
 	}
 
 	result := s.EntityCollection.FindOne(ctx, bson.M{"_id": uuid})
-	// Create an empty EntityItem to write our decode result to
+	// Create an empty Entity to write our decode result to
 	data := &models.EntityItem{}
 	// decode and write to data
 	if err := result.Decode(&data); err != nil {

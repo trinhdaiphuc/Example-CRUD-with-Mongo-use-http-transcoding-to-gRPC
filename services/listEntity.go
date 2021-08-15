@@ -14,7 +14,7 @@ import (
 
 // ListEntities is a gRPC function to list all entities in MongoDB
 func (s *Entities) ListEntities(ctx context.Context, req *empty.Empty) (*pb.ListEntitiesRes, error) {
-	// Initiate a EntityItem type to write decoded data to
+	// Initiate a Entity type to write decoded data to
 	data := &models.EntityItem{}
 	// collection.Find returns a cursor for our (empty) query
 	cursor, err := s.EntityCollection.Find(context.Background(), bson.M{})

@@ -1,38 +1,22 @@
 package main
 
 import (
-	"context"
-	"flag"
 	"fmt"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 
-	"github.com/golang/glog"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
-	"github.com/joho/godotenv"
 	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
 	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos/entity"
 	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/services"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
 )
 
-// Global variables for db connection , collection and context
-
 func main() {
-	// Configure 'log' package to give file name and line number on eg. log.Fatal
-	// Pipe flags to one another (log.LstdFLags = log.Ldate | log.Ltime)
-	err := godotenv.Load()
-	flag.Parse()
-	defer glog.Flush()
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	fmt.Println("Starting server on port :50051...")
-
 	// Start our listener, 50051 is the default gRPC port
 	listener, err := net.Listen("tcp", ":50051")
 	// Handle errors if any
@@ -58,31 +42,9 @@ func main() {
 	// Register the service with the server
 	pb.RegisterEntityServiceServer(s, srv)
 
-	// Initialize MongoDb client
-	fmt.Println("Connecting to MongoDB...")
-
-	// non-nil empty context
-	mongoctx := context.Background()
-
-	mongoURI := "mongodb://localhost:27017"
-	if len(os.Getenv("DB_HOST"))>0 {
-		mongoURI=os.Getenv("DB_HOST")
-	}
-	// Connect takes in a context and options, the connection URI is the only option we pass for now
-	db, err := mongo.Connect(mongoctx, options.Client().ApplyURI(mongoURI))
-	fmt.Println("DB_HOST ", os.Getenv("DB_HOST"))
-	// Handle potential errors
+	db, mongoCtx, err := models.InitDB()
 	if err != nil {
 		log.Fatal(err)
-		glog.Fatal(err)
-	}
-
-	// Check whether the connection was succesful by pinging the MongoDB server
-	err = db.Ping(mongoctx, nil)
-	if err != nil {
-		log.Fatalf("Could not connect to MongoDB: %v\n", err)
-	} else {
-		fmt.Println("Connected to Mongodb")
 	}
 	// Bind our collection to our global variable for use in other methods
 	srv.EntityCollection = models.NewEntityCollection(db)
@@ -91,7 +53,6 @@ func main() {
 	go func() {
 		if err := s.Serve(listener); err != nil {
 			log.Fatalf("Failed to serve: %v", err)
-			glog.Fatal(err)
 		}
 	}()
 	fmt.Println("Server succesfully started on port :50051")
@@ -113,6 +74,6 @@ func main() {
 	s.Stop()
 	listener.Close()
 	fmt.Println("Closing MongoDB connection")
-	db.Disconnect(mongoctx)
+	db.Disconnect(mongoCtx)
 	fmt.Println("Done.")
 }

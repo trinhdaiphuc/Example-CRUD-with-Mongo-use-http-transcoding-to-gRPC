@@ -1,18 +1,18 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
-	"flag"
 	"fmt"
+	"log"
 	"net/http"
-	"os"
 	"strconv"
-
-	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos/entity"
 
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"golang.org/x/net/context"
+	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/models"
+	pb "github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/protos/entity"
+	"github.com/trinhdaiphuc/Example-CRUD-with-Mongo-use-http-transcoding-to-gRPC/services"
 	"google.golang.org/grpc"
 )
 
@@ -23,7 +23,6 @@ type errorBody struct {
 
 func CustomHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, _ *http.Request, err error) {
 	const fallback = `{"error": "failed to marshal error message"}`
-	fmt.Println("Custom HTTP error ->")
 	fmt.Println("Message: ", grpc.ErrorDesc(err))
 	fmt.Println("Code: ", grpc.Code(err))
 
@@ -44,11 +43,16 @@ func RunEndPoint(address string, opts ...runtime.ServeMuxOption) error {
 	defer cancel()
 	fmt.Println("Starting server on port :8080.")
 	mux := runtime.NewServeMux(append(opts, runtime.WithErrorHandler(CustomHTTPError))...)
-	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
 
-	entityEndpoint := flag.String("entity_endpoint", os.Getenv("ENTITY_SERVER_HOST"), "endpoint of EntityService")
+	srv := &services.Entities{}
+	db, mongoCtx, err := models.InitDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Bind our collection to our global variable for use in other methods
+	srv.EntityCollection = models.NewEntityCollection(db)
 
-	err := pb.RegisterEntityServiceHandlerFromEndpoint(ctx, mux, *entityEndpoint, dialOpts)
+	err = pb.RegisterEntityServiceHandlerServer(ctx, mux, srv)
 	if err != nil {
 		return err
 	}
@@ -57,11 +61,14 @@ func RunEndPoint(address string, opts ...runtime.ServeMuxOption) error {
 	if err != nil {
 		fmt.Println("Error when listen ", err)
 	}
+	fmt.Println("\nStopping the server...")
+	fmt.Println("Closing MongoDB connection")
+	db.Disconnect(mongoCtx)
+	fmt.Println("Done.")
 	return nil
 }
 
 func main() {
-	flag.Parse()
 	defer glog.Flush()
 
 	if err := RunEndPoint(":8080"); err != nil {

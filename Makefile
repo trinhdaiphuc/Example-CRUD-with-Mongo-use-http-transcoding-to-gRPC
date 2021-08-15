@@ -1,16 +1,34 @@
 .DEFAULT_GOAL := dc-all
 
+build:
+	go build -o bin/gateway gateway/main.go
+	go build -o bin/denny denny/main.go
+	go build -o bin/grpc-server main.go
+	go build -o bin/gateway-server gateway-server/main.go
+
+install-proto-gen-go:
+	go get -u github.com/golang/protobuf/protoc-gen-go
+
 install-third-party:
 	git submodule update --init
 
-gen-protobuf: install-third-party
-	protoc -Iprotos/ protos/*.proto\
+install-protoc-gen-swagger:
+	go get -u github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
+
+install-protoc-gen-grpc-gateway:
+	go get -u github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway
+
+install: install-proto-gen-go install-third-party install-protoc-gen-swagger install-protoc-gen-grpc-gateway
+
+gen-protobuf:
+	protoc -Iprotos/ protos/*.proto \
 		-Ithird_party/googleapis \
 		-Ithird_party/protoc-gen-validate \
 		--go_out=plugins=grpc:protos/ \
 		--grpc-gateway_out=logtostderr=true:protos/ \
-		--include_imports --include_source_info \
 		--validate_out="lang=go:protos/" \
+		--swagger_out=logtostderr=true:public \
+		--include_imports --include_source_info \
 		--descriptor_set_out=protos/proto.pb
 
 dc-gateway:
